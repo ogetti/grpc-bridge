@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { listen } from '@tauri-apps/api/event';
 import toast from 'react-hot-toast';
-import { useRequestStore } from './state/request';
-import { useHistoryStore } from './state/history';
-import { UnaryRequestPanel } from './components/UnaryRequestPanel';
-import { useServicesStore } from './state/services';
-import { useProtoFiles } from './state/protoFiles';
+import { useRequestStore } from '@/state/request';
+import { useHistoryStore } from '@/state/history';
+import { UnaryRequestPanel } from '@/components/UnaryRequestPanel';
+import { useServicesStore } from '@/state/services';
+import { useProtoFiles } from '@/state/protoFiles';
 import { invoke } from '@tauri-apps/api/core';
-import './i18n'; // Initialize i18n
+import { ThemeProvider } from '@/context/ThemeContext';
+import '@/i18n'; // Initialize i18n
 
 const App: React.FC = () => {
   const setBusy = useRequestStore(s => s.setBusy);
@@ -73,10 +74,14 @@ const App: React.FC = () => {
   }, [setBusy, setLastResponse, setIndexing, updatePendingHistory]);
 
   return (
-    <div className="p-4 space-y-4">
-      <h1 className="text-2xl">gRPC Bridge (Unary MVP)</h1>
-      <UnaryRequestPanel />
-    </div>
+    <ThemeProvider>
+      <div className="min-h-screen bg-background text-foreground theme-transition">
+        <div className="p-4 space-y-4">
+          <h1 className="text-2xl font-bold">🌉 「gRPC Bridge」</h1>
+          <UnaryRequestPanel />
+        </div>
+      </div>
+    </ThemeProvider>
   );
 };
 

@@ -181,7 +181,9 @@ async fn run_grpc_call(app: tauri::AppHandle, state: tauri::State<'_, AppState>,
         if let Some(rp) = &root_dir { cmd.arg("-import-path").arg(rp); }
         for f in &proto_files { cmd.arg("-proto").arg(f); }
         for h in headers { cmd.arg("-H").arg(h); }
-        cmd.arg("-d").arg(payload);
+        // 빈 payload인 경우 빈 JSON 객체 사용
+        let effective_payload = if payload.trim().is_empty() { "{}" } else { &payload };
+        cmd.arg("-d").arg(effective_payload);
     cmd.arg(&target);
         cmd.arg(format!("{}.{}", service, method));
         info!(?cmd, "spawning grpcurl");
@@ -233,7 +235,11 @@ async fn run_grpc_call(app: tauri::AppHandle, state: tauri::State<'_, AppState>,
 
 #[tauri::command(rename_all = "snake_case")]
 async fn remove_proto_root(state: tauri::State<'_, AppState>, root_id: String) -> Result<(), String> {
+    // Remove from all related data structures
     state.roots.lock().unwrap().remove(&root_id);
+    state.services_by_root.lock().unwrap().remove(&root_id);
+    state.files_by_root.lock().unwrap().remove(&root_id);
+    info!(root_id = %root_id, "removed proto root and associated data");
     Ok(())
 }
 

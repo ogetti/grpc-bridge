@@ -22,7 +22,8 @@
         "format": "Format",
         "showDiff": "Show Diff",
         "hideDiff": "Hide Diff",
-        "warning": "Warning"
+        "warning": "Warning",
+        "optional": "Optional"
     },
     "app": {
         "title": "gRPC Bridge",
@@ -41,7 +42,10 @@
         "fileCount_plural": "{{count}} files",
         "protoRootPath": "Proto Root Path",
         "pathPlaceholder": "/abs/path/to/protos",
-        "selectRoot": "Select root"
+        "selectRoot": "Select root",
+        "confirmRemove": "Remove this root?",
+        "removeSuccess": "Root removed successfully",
+        "removeRoot": "Remove Root"
     },
     "grpc": {
         "configuration": "Configuration",
@@ -70,13 +74,11 @@
         "requestFailed": "Request failed",
         "skeleton": "Skeleton",
         "noPreviousPayload": "No previous payload",
-        "savePreset": "Save Preset",
         "payloadPlaceholder": "{\"key\": \"value\"}",
-        "loadPreset": "Load Preset",
-        "renamePreset": "Rename Preset",
         "authToken": "Auth Token",
         "authTokenPlaceholder": "Bearer token",
-        "autoAuth": "Auto add Authorization header"
+        "autoAuth": "Auto add Authorization header",
+        "executeRequest": "Test Request"
     },
     "menu": {
         "file": "File",

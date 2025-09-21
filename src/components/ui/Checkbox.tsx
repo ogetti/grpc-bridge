@@ -1,27 +1,37 @@
 import * as React from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { Check } from 'lucide-react';
-import { cn } from '../../lib/utils';
+import { Check, Minus } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
->(({ className, ...props }, ref) => (
-  <CheckboxPrimitive.Root
-    ref={ref}
-    className={cn(
-      'peer h-4 w-4 shrink-0 rounded-sm border border-neutral-700 bg-neutral-900 shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-600 data-[state=checked]:text-neutral-100',
-      className
-    )}
-    {...props}
-  >
-    <CheckboxPrimitive.Indicator
-      className={cn('flex items-center justify-center text-current')}
+>(({ className, ...props }, ref) => {
+  const isIndeterminate = props.checked === 'indeterminate';
+
+  return (
+    <CheckboxPrimitive.Root
+      ref={ref}
+      className={cn(
+        'peer h-5 w-5 shrink-0 rounded border-2 border-input bg-background shadow-sm transition-all hover:border-accent-foreground/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+        'data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-primary-foreground',
+        'data-[state=indeterminate]:bg-primary data-[state=indeterminate]:border-primary data-[state=indeterminate]:text-primary-foreground',
+        className
+      )}
+      {...props}
     >
-      <Check className="h-4 w-4" />
-    </CheckboxPrimitive.Indicator>
-  </CheckboxPrimitive.Root>
-));
+      <CheckboxPrimitive.Indicator
+        className={cn('flex items-center justify-center text-current')}
+      >
+        {isIndeterminate ? (
+          <Minus className="h-3.5 w-3.5 stroke-[3]" />
+        ) : (
+          <Check className="h-3.5 w-3.5 stroke-[3]" />
+        )}
+      </CheckboxPrimitive.Indicator>
+    </CheckboxPrimitive.Root>
+  );
+});
 Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 
 export { Checkbox };

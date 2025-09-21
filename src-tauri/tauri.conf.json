@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "identifier": "com.example.grpcbridge",
   "build": {
-    "beforeDevCommand": "pnpm dev",
+    "beforeDevCommand": "pnpm build",
     "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"
   },
@@ -17,9 +17,9 @@
       }
     ]
   },
-   "bundle": {
+  "bundle": {
     "icon": [
-      "icons/icon.png"
+      "./icons/icon.png"
     ]
   }
 }

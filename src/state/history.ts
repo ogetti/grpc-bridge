@@ -16,7 +16,7 @@ interface HistoryState {
   calls: CallRecord[];
   push: (rec: Omit<CallRecord, 'id'|'at'|'ok'|'tookMs'>) => void;
   updatePending: (ok: boolean, tookMs?: number) => void;
-  clear: () => void;
+  clearAll: () => void;
   remove: (id: string) => void;
   exportAll: () => string;
 }
@@ -42,7 +42,7 @@ export const useHistoryStore = create<HistoryState>((set,get) => ({
       set({ calls });
     }
   },
-  clear: () => { save([]); set({ calls: [] }); }
-  ,remove: (id) => { const calls = get().calls.filter(c => c.id !== id); save(calls); set({ calls }); }
-  ,exportAll: () => JSON.stringify(get().calls, null, 2)
+  clearAll: () => { save([]); set({ calls: [] }); },
+  remove: (id) => { const calls = get().calls.filter(c => c.id !== id); save(calls); set({ calls }); },
+  exportAll: () => JSON.stringify(get().calls, null, 2)
 }));

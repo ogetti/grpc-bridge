@@ -7,8 +7,50 @@ set -e
 echo "🚀 Cross-platform build for gRPC Bridge"
 echo "======================================="
 
-# Load cargo environment
-source "$HOME/.cargo/env" 2>/dev/null || true
+# Load cargo environment if needed
+if ! command -v cargo >/dev/null 2>&1; then
+    [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+fi
+
+# Detect current platform and set appropriate rustup toolchain
+detect_toolchain() {
+    local arch=$(uname -m)
+    local os=$(uname -s)
+
+    case "$os" in
+        Darwin)
+            case "$arch" in
+                arm64|aarch64) echo "stable-aarch64-apple-darwin" ;;
+                x86_64) echo "stable-x86_64-apple-darwin" ;;
+                *) echo "stable" ;;
+            esac
+            ;;
+        Linux)
+            case "$arch" in
+                x86_64) echo "stable-x86_64-unknown-linux-gnu" ;;
+                aarch64) echo "stable-aarch64-unknown-linux-gnu" ;;
+                *) echo "stable" ;;
+            esac
+            ;;
+        MINGW*|MSYS*|CYGWIN*)
+            echo "stable-x86_64-pc-windows-msvc"
+            ;;
+        *)
+            echo "stable"
+            ;;
+    esac
+}
+
+# Use platform-specific rustup toolchain if available
+TOOLCHAIN=$(detect_toolchain)
+TOOLCHAIN_PATH="$HOME/.rustup/toolchains/$TOOLCHAIN/bin"
+
+if [ -d "$TOOLCHAIN_PATH" ]; then
+    echo "🔧 Using toolchain: $TOOLCHAIN"
+    export PATH="$TOOLCHAIN_PATH:$PATH"
+else
+    echo "⚠️  Toolchain $TOOLCHAIN not found, using system rustc"
+fi
 
 # Build frontend first
 echo "📦 Building frontend..."
@@ -24,13 +66,13 @@ echo "🔨 Building for multiple platforms..."
 
 # Build for macOS (current platform)
 echo "🍎 Building for macOS (aarch64-apple-darwin)..."
-cargo build --release --manifest-path src-tauri/Cargo.toml --target aarch64-apple-darwin
+rustup run stable cargo build --release --manifest-path src-tauri/Cargo.toml --target aarch64-apple-darwin
 echo "   ✅ macOS build complete: ./src-tauri/target/aarch64-apple-darwin/release/grpc-bridge"
 
 # Build for macOS Intel
 echo "🍎 Building for macOS Intel (x86_64-apple-darwin)..."
 rustup target add x86_64-apple-darwin 2>/dev/null || true
-cargo build --release --manifest-path src-tauri/Cargo.toml --target x86_64-apple-darwin
+rustup run stable cargo build --release --manifest-path src-tauri/Cargo.toml --target x86_64-apple-darwin
 echo "   ✅ macOS Intel build complete: ./src-tauri/target/x86_64-apple-darwin/release/grpc-bridge"
 
 # Build for Windows
@@ -40,7 +82,7 @@ export CXX_x86_64_pc_windows_gnu="x86_64-w64-mingw32-g++"
 export AR_x86_64_pc_windows_gnu="x86_64-w64-mingw32-ar"
 export CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER="x86_64-w64-mingw32-gcc"
 
-cargo build --release --manifest-path src-tauri/Cargo.toml --target x86_64-pc-windows-gnu
+rustup run stable cargo build --release --manifest-path src-tauri/Cargo.toml --target x86_64-pc-windows-gnu
 echo "   ✅ Windows build complete: ./src-tauri/target/x86_64-pc-windows-gnu/release/grpc-bridge.exe"
 
 echo ""

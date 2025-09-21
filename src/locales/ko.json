@@ -22,7 +22,8 @@
         "format": "형식",
         "showDiff": "차이 보기",
         "hideDiff": "차이 숨기기",
-        "warning": "경고"
+        "warning": "경고",
+        "optional": "선택사항"
     },
     "app": {
         "title": "gRPC Bridge",
@@ -41,7 +42,10 @@
         "fileCount_plural": "{{count}}개 파일",
         "protoRootPath": "Proto 루트 경로",
         "pathPlaceholder": "/abs/path/to/protos",
-        "selectRoot": "루트 선택"
+        "selectRoot": "루트 선택",
+        "confirmRemove": "이 루트를 삭제하시겠습니까?",
+        "removeSuccess": "루트가 성공적으로 삭제되었습니다",
+        "removeRoot": "루트 삭제"
     },
     "grpc": {
         "configuration": "구성",
@@ -70,13 +74,11 @@
         "requestFailed": "요청이 실패했습니다",
         "skeleton": "스켈레톤",
         "noPreviousPayload": "이전 페이로드가 없습니다",
-        "savePreset": "프리셋 저장",
         "payloadPlaceholder": "{\"key\": \"value\"}",
-        "loadPreset": "프리셋 불러오기",
-        "renamePreset": "프리셋 이름 변경",
         "authToken": "인증 토큰",
         "authTokenPlaceholder": "Bearer 토큰",
-        "autoAuth": "Authorization 헤더 자동 추가"
+        "autoAuth": "Authorization 헤더 자동 추가",
+        "executeRequest": "요청 테스트"
     },
     "menu": {
         "file": "파일",

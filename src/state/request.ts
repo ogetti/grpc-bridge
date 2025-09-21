@@ -10,7 +10,6 @@ export interface RequestState {
   rootPath: string;          // user selected proto root path
   rootId?: string;           // registered backend id
   knownRoots: { id: string; path: string }[];
-  projectPath: string;       // optional secondary path (future use)
   protoFilesInput: string;   // newline separated proto files
   target: string;
   service: string;
@@ -28,7 +27,6 @@ export interface RequestState {
   addKnownRoot: (r: { id: string; path: string }) => void;
   removeKnownRoot: (id: string) => void;
   setKnownRoots: (r: { id: string; path: string }[]) => void;
-  setProjectPath: (v: string) => void;
   setProtoFilesInput: (v: string) => void;
   setTarget: (v: string) => void;
   setService: (v: string) => void;
@@ -49,12 +47,11 @@ export const useRequestStore = create<RequestState>((set): RequestState => ({
   indexing: false,
   rootPath: '',
   knownRoots: [],
-  projectPath: '',
   protoFilesInput: '',
   target: 'localhost:50051',
   service: '',
   method: '',
-  payload: '{"message":"hello"}',
+  payload: '',
   lastSentPayload: undefined,
   headers: [],
   authToken: '',
@@ -66,7 +63,6 @@ export const useRequestStore = create<RequestState>((set): RequestState => ({
   addKnownRoot: (r) => set(s => ({ knownRoots: [r, ...s.knownRoots.filter(k => k.id !== r.id)] })),
   removeKnownRoot: (id) => set(s => ({ knownRoots: s.knownRoots.filter(k => k.id !== id) })),
   setKnownRoots: (r) => set({ knownRoots: r }),
-  setProjectPath: (v) => set({ projectPath: v }),
   setProtoFilesInput: (v) => set({ protoFilesInput: v }),
   setTarget: (v) => set({ target: v }),
   setService: (v) => set({ service: v }),

@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"Default capability with event listen permissions","local":true,"windows":["main"],"permissions":["core:default","core:event:default","core:event:allow-listen","core:window:default","core:path:default","core:app:default","core:resources:default","core:menu:default","core:tray:default","core:window:allow-set-title"]}}
